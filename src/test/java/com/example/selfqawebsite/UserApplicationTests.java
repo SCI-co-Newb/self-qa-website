@@ -1,5 +1,6 @@
 package com.example.selfqawebsite;
 
+import com.example.selfqawebsite.entity.User;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,15 +12,18 @@ import org.springframework.http.ResponseEntity;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-class SelfQaWebsiteApplicationTests {
+class UserApplicationTests {
     @Autowired
     TestRestTemplate restTemplate;
 
     @Test
-    void shouldReturnUserWhenDataIsSaved() {
-        ResponseEntity<String> response = restTemplate.getForEntity("/user/1", String.class);
-        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+    void shouldCreateUser() {
+        User newUser = new User();
+        newUser.setUsername("admin");
+        newUser.setPassword("admin");
+        ResponseEntity<User> responseEntity = restTemplate.postForEntity("/users", newUser, User.class);
 
+        assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.CREATED);
     }
 
 }

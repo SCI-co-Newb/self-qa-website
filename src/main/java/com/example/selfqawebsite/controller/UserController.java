@@ -1,5 +1,7 @@
-package com.example.selfqawebsite;
+package com.example.selfqawebsite.controller;
 
+import com.example.selfqawebsite.repository.UserRepository;
+import com.example.selfqawebsite.entity.User;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -9,10 +11,10 @@ import java.net.URI;
 
 @RestController
 @RequestMapping("/users")
-public class SelfQaWebsiteController {
-    private final SelfQaWebsiteRepository selfQaWebsiteRepository;
+public class UserController {
+    private final UserRepository selfQaWebsiteRepository;
 
-    private SelfQaWebsiteController(SelfQaWebsiteRepository selfQaWebsiteRepository) {
+    private UserController(UserRepository selfQaWebsiteRepository) {
         this.selfQaWebsiteRepository = selfQaWebsiteRepository;
     }
 
@@ -32,7 +34,7 @@ public class SelfQaWebsiteController {
         User savedUser = selfQaWebsiteRepository.save(user);
         URI locationOfNewUser = ucb
                 .path("/users/{id}")
-                .buildAndExpand(savedUser.id())
+                .buildAndExpand(savedUser.getId())
                 .toUri();
         return ResponseEntity.created(locationOfNewUser).build();
     }
