@@ -2,14 +2,16 @@ package com.example.selfqawebsite.service;
 
 import com.example.selfqawebsite.entity.User;
 import com.example.selfqawebsite.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class UserService {
 
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
+
+    public UserService(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
     // POST method
     public User save(User user) {
@@ -35,8 +37,14 @@ public class UserService {
         return "product removed";
     }
 
-    public String deleteByUsernameAndPassword(String username, String password) {
-        userRepository.deleteByUsernameAndPassword(username, password);
-        return "product removed";
+    // PUT methods
+    public User updateUser(User user) {
+        User existingUser = userRepository.findById(user.getId()).orElse(null);
+        if (existingUser != null) {
+            existingUser.setUsername(user.getUsername());
+            existingUser.setPassword(user.getPassword());
+            return userRepository.save(existingUser);
+        }
+        return null;
     }
 }

@@ -1,6 +1,7 @@
 package com.example.selfqawebsite.entity;
 
 import jakarta.persistence.*;
+import org.springframework.lang.NonNull;
 
 @Entity
 @Table(name = "users") // Map to the 'users' table
