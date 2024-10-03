@@ -60,4 +60,33 @@ public class UserController {
                 .toUri();
         return ResponseEntity.created(locationOfNewUser).build();
     }
+
+    // update user in database based on changes to user in code
+    @PutMapping("/updateUser")
+    public ResponseEntity<Void> updateUser(@RequestBody User user) {
+        if (user.getId() == null) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        User savedUser = userService.updateUser(user);
+
+        if (savedUser != null) {
+            return ResponseEntity.ok().build();
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @DeleteMapping("/deleteUser")
+    public ResponseEntity<Void> deleteUser(@RequestParam String requestedUsername,
+                                           @RequestParam String requestedPassword) {
+        User user = userService.findByUsernameAndPassword(requestedUsername, requestedPassword);
+
+        if (user == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        userService.deleteById(user.getId());
+        return ResponseEntity.ok().build();
+    }
 }

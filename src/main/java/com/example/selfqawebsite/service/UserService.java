@@ -32,9 +32,8 @@ public class UserService {
     }
 
     // DELETE method
-    public String deleteById(long id) {
+    public void deleteById(long id) {
         userRepository.deleteById(id);
-        return "product removed";
     }
 
     // PUT methods

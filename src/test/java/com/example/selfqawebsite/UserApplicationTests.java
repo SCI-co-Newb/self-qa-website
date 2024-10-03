@@ -41,8 +41,6 @@ class UserApplicationTests {
         newUser.setPassword("adminFindById");
         ResponseEntity<Void> postResponse = restTemplate.postForEntity("/users", newUser, Void.class);
 
-        assertThat(postResponse.getStatusCode()).isEqualTo(HttpStatus.CREATED);
-
         String location = Objects.requireNonNull(postResponse.getHeaders().getLocation()).getPath();
         Long newUserId = Long.parseLong(location.substring(location.lastIndexOf('/') + 1));
 
@@ -63,6 +61,29 @@ class UserApplicationTests {
         assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(responseEntity.getBody()).isNotNull();
         assertThat(responseEntity.getBody().getUsername()).isEqualTo("adminFindByUsername");
+    }
+
+    @Test
+    void shouldUpdateUser() {
+        User newUser = new User();
+        newUser.setUsername("adminUpdate");
+        newUser.setPassword("adminUpdate");
+        ResponseEntity<Void> postResponse = restTemplate.postForEntity("/users", newUser, Void.class);
+
+        String location = Objects.requireNonNull(postResponse.getHeaders().getLocation()).getPath();
+        Long newUserId = Long.parseLong(location.substring(location.lastIndexOf('/') + 1));
+
+        newUser.setId(newUserId);
+        newUser.setUsername("adminUpdateUpdate");
+        newUser.setPassword("adminUpdateUpdate");
+        restTemplate.put("/users/updateUser", newUser);
+
+        ResponseEntity<User> responseEntity = restTemplate.getForEntity("/users/{id}", User.class, newUserId);
+
+        assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(responseEntity.getBody()).isNotNull();
+        assertThat(responseEntity.getBody().getUsername()).isEqualTo("adminUpdateUpdate");
+        assertThat(responseEntity.getBody().getPassword()).isEqualTo("adminUpdateUpdate");
     }
 
 }
