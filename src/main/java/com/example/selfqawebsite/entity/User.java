@@ -1,7 +1,6 @@
 package com.example.selfqawebsite.entity;
 
 import jakarta.persistence.*;
-import org.springframework.lang.NonNull;
 
 @Entity
 @Table(name = "users") // Map to the 'users' table
@@ -12,10 +11,10 @@ public class User {
     @Column(name = "id")  // Explicitly map to the 'id' column
     private Long id;
 
-    @Column(name = "username")  // Map to the 'username' column
+    @Column(name = "username", nullable = false, unique = true)  // Map to the 'username' column
     private String username;
 
-    @Column(name = "password")  // Map to the 'password' column
+    @Column(name = "password", nullable = false)  // Map to the 'password' column
     private String password;
 
     public Long getId() {
