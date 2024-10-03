@@ -86,4 +86,23 @@ class UserApplicationTests {
         assertThat(responseEntity.getBody().getPassword()).isEqualTo("adminUpdateUpdate");
     }
 
+    @Test
+    void shouldDeleteUser() {
+        User newUser = new User();
+        newUser.setUsername("adminDelete");
+        newUser.setPassword("adminDelete");
+        ResponseEntity<Void> postResponse = restTemplate.postForEntity("/users", newUser, Void.class);
+
+        String location = Objects.requireNonNull(postResponse.getHeaders().getLocation()).getPath();
+        Long newUserId = Long.parseLong(location.substring(location.lastIndexOf('/') + 1));
+
+        restTemplate.delete("/users/deleteUser?requestedUsername={username}&requestedPassword={password}",
+                newUser.getUsername(), newUser.getPassword());
+
+        ResponseEntity<User> responseEntity = restTemplate.getForEntity("/users/{id}", User.class, newUserId);
+
+        assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+
+    }
+
 }
