@@ -26,7 +26,8 @@ public class UserController {
         User user = userService.findById(requestedId);
 
         if (user != null) {
-            // 200 meaning OK user is found
+            // 200 meaning OK user is found and redact password
+            user.setPassword("*redacted*");
             return ResponseEntity.ok(user);
         } else {
             // 404 meaning not founds
@@ -37,6 +38,21 @@ public class UserController {
     @GetMapping("/findByUsername")
     public ResponseEntity<User> findByUsername(@RequestParam String requestedUsername) {
         User user = userService.findByUsername(requestedUsername);
+
+        if (user != null) {
+            // 200 meaning OK user is found and redact password
+            user.setPassword("*redacted*");
+            return ResponseEntity.ok(user);
+        } else {
+            // 404 meaning not founds
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @GetMapping("/findByUsernameAndPassword")
+    public ResponseEntity<User> findByUsername(@RequestParam String requestedUsername,
+                                               @RequestParam String requestedPassword) {
+        User user = userService.findByUsernameAndPassword(requestedUsername, requestedPassword);
 
         if (user != null) {
             // 200 meaning OK user is found
