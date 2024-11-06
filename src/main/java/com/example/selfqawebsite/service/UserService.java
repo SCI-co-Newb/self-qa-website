@@ -19,7 +19,7 @@ public class UserService {
     }
 
     // GET methods
-    public User findById(long id) {
+    public User findById(Long id) {
         return userRepository.findById(id).orElse(null);
     }
 
@@ -32,7 +32,7 @@ public class UserService {
     }
 
     // DELETE method
-    public void deleteById(long id) {
+    public void deleteById(Long id) {
         userRepository.deleteById(id);
     }
 
