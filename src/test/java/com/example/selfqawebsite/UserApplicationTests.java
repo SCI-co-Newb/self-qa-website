@@ -42,7 +42,7 @@ class UserApplicationTests {
         ResponseEntity<Void> postResponse = restTemplate.postForEntity("/users", newUser, Void.class);
 
         String location = Objects.requireNonNull(postResponse.getHeaders().getLocation()).getPath();
-        Long newUserId = Long.parseLong(location.substring(location.lastIndexOf('/') + 1));
+        Long newUserId = (Long) Long.parseLong(location.substring(location.lastIndexOf('/') + 1));
 
         ResponseEntity<User> responseEntity = restTemplate.getForEntity("/users/{id}", User.class, newUserId);
 
@@ -71,7 +71,7 @@ class UserApplicationTests {
         ResponseEntity<Void> postResponse = restTemplate.postForEntity("/users", newUser, Void.class);
 
         String location = Objects.requireNonNull(postResponse.getHeaders().getLocation()).getPath();
-        Long newUserId = Long.parseLong(location.substring(location.lastIndexOf('/') + 1));
+        Long newUserId = (Long) Long.parseLong(location.substring(location.lastIndexOf('/') + 1));
 
         newUser.setId(newUserId);
         newUser.setUsername("adminUpdateUpdate");
@@ -94,7 +94,7 @@ class UserApplicationTests {
         ResponseEntity<Void> postResponse = restTemplate.postForEntity("/users", newUser, Void.class);
 
         String location = Objects.requireNonNull(postResponse.getHeaders().getLocation()).getPath();
-        Long newUserId = Long.parseLong(location.substring(location.lastIndexOf('/') + 1));
+        Long newUserId = (Long) Long.parseLong(location.substring(location.lastIndexOf('/') + 1));
 
         restTemplate.delete("/users/deleteUser?requestedUsername={username}&requestedPassword={password}",
                 newUser.getUsername(), newUser.getPassword());
